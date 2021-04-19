@@ -52,7 +52,7 @@ func CmdLogin(o *oreo.Client, globals *jiracli.GlobalOptions, opts *jiracli.Comm
 	}
 
 	ua := o.WithoutRedirect().WithRetries(0).WithoutCallbacks().WithPostCallback(authCallback)
-	for {
+	for retry := 0; retry < 3; retry++ {
 		if session, err := jira.GetSession(o, globals.Endpoint.Value); err != nil {
 			// No active session so try to create a new one
 			_, err := jira.NewSession(ua, globals.Endpoint.Value, globals)
